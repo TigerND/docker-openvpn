@@ -1,9 +1,9 @@
 # OpenVPN for Docker
 
-[![Build Status](https://travis-ci.org/kylemanna/docker-openvpn.svg)](https://travis-ci.org/kylemanna/docker-openvpn)
-[![Docker Stars](https://img.shields.io/docker/stars/kylemanna/openvpn.svg)](https://hub.docker.com/r/kylemanna/openvpn/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/kylemanna/openvpn.svg)](https://hub.docker.com/r/kylemanna/openvpn/)
-[![ImageLayers](https://images.microbadger.com/badges/image/kylemanna/openvpn.svg)](https://microbadger.com/#/images/kylemanna/openvpn)
+[![Build Status](https://travis-ci.org/TigerND/docker-openvpn.svg)](https://travis-ci.org/TigerND/docker-openvpn)
+[![Docker Stars](https://img.shields.io/docker/stars/TigerND/openvpn.svg)](https://hub.docker.com/r/TigerND/openvpn/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/TigerND/openvpn.svg)](https://hub.docker.com/r/TigerND/openvpn/)
+[![ImageLayers](https://images.microbadger.com/badges/image/TigerND/openvpn.svg)](https://microbadger.com/#/images/TigerND/openvpn)
 
 
 OpenVPN server in a Docker container complete with an EasyRSA PKI CA.
@@ -13,37 +13,33 @@ a corresponding [Digital Ocean Community Tutorial](http://bit.ly/1AGUZkq).
 
 #### Upstream Links
 
-* Docker Registry @ [kylemanna/openvpn](https://hub.docker.com/r/kylemanna/openvpn/)
-* GitHub @ [kylemanna/docker-openvpn](https://github.com/kylemanna/docker-openvpn)
-
-#### Example Service
-
-* [backroad.io](http://beta.backroad.io?utm_source=kylemanna/openvpn&utm_medium=readme&utm_campaign=20150621) - powered by *kylemanna/openvpn*
+* Docker Registry @ [TigerND/openvpn](https://hub.docker.com/r/TigerND/openvpn/)
+* GitHub @ [TigerND/docker-openvpn](https://github.com/TigerND/docker-openvpn)
 
 ## Quick Start
 
-* Initialize the `/data/ovpn-data` container that will hold the configuration files and certificates
+* Initialize the `/data/openvpn` container that will hold the configuration files and certificates
 
-        docker run -v /data/ovpn-data:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
-        docker run -v /data/ovpn-data:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+        docker run -v /data/openvpn:/etc/openvpn --rm TigerND/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
+        docker run -v /data/openvpn:/etc/openvpn --rm -it TigerND/openvpn ovpn_initpki
 
 * Start OpenVPN server process
 
-        docker run -v /data/ovpn-data:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+        docker run -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN TigerND/openvpn
 
 * Generate a client certificate without a passphrase
 
-        docker run -v /data/ovpn-data:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass
+        docker run -v /data/openvpn:/etc/openvpn --rm -it TigerND/openvpn easyrsa build-client-full CLIENTNAME nopass
 
 * Retrieve the client configuration with embedded certificates
 
-        docker run -v /data/ovpn-data:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+        docker run -v /data/openvpn:/etc/openvpn --rm TigerND/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 
 ## Debugging Tips
 
 * Create an environment variable with the name DEBUG and value of 1 to enable debug output (using "docker -e").
 
-        docker run -v /data/ovpn-data:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 kylemanna/openvpn
+        docker run -v /data/openvpn:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 TigerND/openvpn
 
 * Test using a client that has openvpn installed correctly 
 
@@ -57,7 +53,7 @@ a corresponding [Digital Ocean Community Tutorial](http://bit.ly/1AGUZkq).
 
 ## How Does It Work?
 
-Initialize the volume container using the `kylemanna/openvpn` image with the
+Initialize the volume container using the `TigerND/openvpn` image with the
 included scripts to automatically generate:
 
 - Diffie-Hellman parameters
@@ -73,11 +69,11 @@ declares that directory as a volume. It means that you can start another
 container with the `-v` argument, and access the configuration.
 The volume also holds the PKI keys and certs so that it could be backed up.
 
-To generate a client certificate, `kylemanna/openvpn` uses EasyRSA via the
+To generate a client certificate, `TigerND/openvpn` uses EasyRSA via the
 `easyrsa` command in the container's path.  The `EASYRSA_*` environmental
 variables place the PKI CA under `/etc/openvpn/pki`.
 
-Conveniently, `kylemanna/openvpn` comes with a script called `ovpn_getclient`,
+Conveniently, `TigerND/openvpn` comes with a script called `ovpn_getclient`,
 which dumps an inline OpenVPN client configuration file.  This single file can
 then be given to a client for access to the VPN.
 
@@ -92,7 +88,7 @@ is rooted.
 The topology used is `net30`, because it works on the widest range of OS.
 `p2p`, for instance, does not work on Windows.
 
-The UDP server uses`192.168.255.0/24` for dynamic clients by default.
+The UDP server uses`10.8.0.0/24` for dynamic clients by default.
 
 The client profile specifies `redirect-gateway def1`, meaning that after
 establishing the VPN connection, all traffic will go through the VPN.
@@ -143,8 +139,8 @@ OpenVPN with latest OpenSSL on Ubuntu 12.04 LTS).
 ### It Doesn't Stomp All Over the Server's Filesystem
 
 Everything for the Docker container is contained in two images: the ephemeral
-run time image (kylemanna/openvpn) and the `/data/ovpn-data` data volume. To remove
-it, remove the corresponding containers, `/data/ovpn-data` data volume and Docker
+run time image (TigerND/openvpn) and the `/data/openvpn` data volume. To remove
+it, remove the corresponding containers, `/data/openvpn` data volume and Docker
 image and it's completely removed.  This also makes it easier to run multiple
 servers since each lives in the bubble of the container (of course multiple IPs
 or separate ports are needed to communicate with the world).
