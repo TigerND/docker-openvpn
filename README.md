@@ -1,9 +1,9 @@
 # OpenVPN for Docker
 
 [![Build Status](https://travis-ci.org/TigerND/docker-openvpn.svg)](https://travis-ci.org/TigerND/docker-openvpn)
-[![Docker Stars](https://img.shields.io/docker/stars/TigerND/openvpn.svg)](https://hub.docker.com/r/teego/openvpn/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/TigerND/openvpn.svg)](https://hub.docker.com/r/teego/openvpn/)
-[![ImageLayers](https://images.microbadger.com/badges/image/TigerND/openvpn.svg)](https://microbadger.com/#/images/teego/openvpn)
+[![Docker Stars](https://img.shields.io/docker/stars/teego/openvpn.svg)](https://hub.docker.com/r/teego/openvpn/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/teego/openvpn.svg)](https://hub.docker.com/r/teego/openvpn/)
+[![ImageLayers](https://images.microbadger.com/badges/image/teego/openvpn.svg)](https://microbadger.com/#/images/teego/openvpn)
 
 
 OpenVPN server in a Docker container complete with an EasyRSA PKI CA.
@@ -13,33 +13,33 @@ a corresponding [Digital Ocean Community Tutorial](http://bit.ly/1AGUZkq).
 
 #### Upstream Links
 
-* Docker Registry @ [TigerND/openvpn](https://hub.docker.com/r/teego/openvpn/)
+* Docker Registry @ [teego/openvpn](https://hub.docker.com/r/teego/openvpn/)
 * GitHub @ [TigerND/docker-openvpn](https://github.com/TigerND/docker-openvpn)
 
 ## Quick Start
 
 * Initialize the `/data/openvpn` container that will hold the configuration files and certificates
 
-        docker run -v /data/openvpn:/etc/openvpn --rm TigerND/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
-        docker run -v /data/openvpn:/etc/openvpn --rm -it TigerND/openvpn ovpn_initpki
+        docker run -v /data/openvpn:/etc/openvpn --rm teego/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
+        docker run -v /data/openvpn:/etc/openvpn --rm -it teego/openvpn ovpn_initpki
 
 * Start OpenVPN server process
 
-        docker run -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN TigerND/openvpn
+        docker run -v /data/openvpn:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN teego/openvpn
 
 * Generate a client certificate without a passphrase
 
-        docker run -v /data/openvpn:/etc/openvpn --rm -it TigerND/openvpn easyrsa build-client-full CLIENTNAME nopass
+        docker run -v /data/openvpn:/etc/openvpn --rm -it teego/openvpn easyrsa build-client-full CLIENTNAME nopass
 
 * Retrieve the client configuration with embedded certificates
 
-        docker run -v /data/openvpn:/etc/openvpn --rm TigerND/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+        docker run -v /data/openvpn:/etc/openvpn --rm teego/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 
 ## Debugging Tips
 
 * Create an environment variable with the name DEBUG and value of 1 to enable debug output (using "docker -e").
 
-        docker run -v /data/openvpn:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 TigerND/openvpn
+        docker run -v /data/openvpn:/etc/openvpn -p 1194:1194/udp --privileged -e DEBUG=1 teego/openvpn
 
 * Test using a client that has openvpn installed correctly 
 
@@ -53,7 +53,7 @@ a corresponding [Digital Ocean Community Tutorial](http://bit.ly/1AGUZkq).
 
 ## How Does It Work?
 
-Initialize the volume container using the `TigerND/openvpn` image with the
+Initialize the volume container using the `teego/openvpn` image with the
 included scripts to automatically generate:
 
 - Diffie-Hellman parameters
@@ -69,11 +69,11 @@ declares that directory as a volume. It means that you can start another
 container with the `-v` argument, and access the configuration.
 The volume also holds the PKI keys and certs so that it could be backed up.
 
-To generate a client certificate, `TigerND/openvpn` uses EasyRSA via the
+To generate a client certificate, `teego/openvpn` uses EasyRSA via the
 `easyrsa` command in the container's path.  The `EASYRSA_*` environmental
 variables place the PKI CA under `/etc/openvpn/pki`.
 
-Conveniently, `TigerND/openvpn` comes with a script called `ovpn_getclient`,
+Conveniently, `teego/openvpn` comes with a script called `ovpn_getclient`,
 which dumps an inline OpenVPN client configuration file.  This single file can
 then be given to a client for access to the VPN.
 
@@ -139,7 +139,7 @@ OpenVPN with latest OpenSSL on Ubuntu 12.04 LTS).
 ### It Doesn't Stomp All Over the Server's Filesystem
 
 Everything for the Docker container is contained in two images: the ephemeral
-run time image (TigerND/openvpn) and the `/data/openvpn` data volume. To remove
+run time image (teego/openvpn) and the `/data/openvpn` data volume. To remove
 it, remove the corresponding containers, `/data/openvpn` data volume and Docker
 image and it's completely removed.  This also makes it easier to run multiple
 servers since each lives in the bubble of the container (of course multiple IPs
