@@ -1,9 +1,9 @@
 # OpenVPN for Docker
 
 [![Build Status](https://travis-ci.org/TigerND/docker-openvpn.svg)](https://travis-ci.org/TigerND/docker-openvpn)
-[![Docker Stars](https://img.shields.io/docker/stars/TigerND/openvpn.svg)](https://hub.docker.com/r/TigerND/openvpn/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/TigerND/openvpn.svg)](https://hub.docker.com/r/TigerND/openvpn/)
-[![ImageLayers](https://images.microbadger.com/badges/image/TigerND/openvpn.svg)](https://microbadger.com/#/images/TigerND/openvpn)
+[![Docker Stars](https://img.shields.io/docker/stars/TigerND/openvpn.svg)](https://hub.docker.com/r/teego/openvpn/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/TigerND/openvpn.svg)](https://hub.docker.com/r/teego/openvpn/)
+[![ImageLayers](https://images.microbadger.com/badges/image/TigerND/openvpn.svg)](https://microbadger.com/#/images/teego/openvpn)
 
 
 OpenVPN server in a Docker container complete with an EasyRSA PKI CA.
@@ -13,7 +13,7 @@ a corresponding [Digital Ocean Community Tutorial](http://bit.ly/1AGUZkq).
 
 #### Upstream Links
 
-* Docker Registry @ [TigerND/openvpn](https://hub.docker.com/r/TigerND/openvpn/)
+* Docker Registry @ [TigerND/openvpn](https://hub.docker.com/r/teego/openvpn/)
 * GitHub @ [TigerND/docker-openvpn](https://github.com/TigerND/docker-openvpn)
 
 ## Quick Start
